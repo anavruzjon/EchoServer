@@ -12,9 +12,26 @@ public class Server {
     public static void main(String[] args) {
 
 
-        Server myServer = new Server(8000);
+        final Server myServer = new Server(8000);
+
+        Thread closeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Scanner scanner = new Scanner(System.in);
+                int exitCode;
+                while (true) {
+                    exitCode = scanner.nextInt();
+                    if (exitCode == 0)
+                        break;
+                }
+                myServer.closeServer();
+                scanner.close();
+            }
+        });
+        closeThread.start();
+
         myServer.listen();
-        myServer.closeServer();
+
 
     }
 
